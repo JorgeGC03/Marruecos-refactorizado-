@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Share2, Download, Heart, MessageCircle, Plus } from "lucide-react"
+import { Share2, Download, Heart, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function FloatingActionButton() {
@@ -107,17 +107,6 @@ Día 5 - Marrakech y Regreso (Lunes)
         className={`bg-[#9c6644] hover:bg-[#8b5a3c] text-white shadow-lg rounded-full w-14 h-14 p-0 transition-transform ${isOpen ? "rotate-45" : "rotate-0"}`}
       >
         <MessageCircle size={24} />
-      </Button>
-
-      {/* New FAB for scrolling to top */}
-      <Button
-        variant="secondary"
-        size="icon"
-        className="fixed bottom-4 right-4 rounded-full shadow-lg bg-[#d4a373] text-white hover:bg-[#c38d5f]"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        aria-label="Volver arriba"
-      >
-        <Plus />
       </Button>
     </div>
   )

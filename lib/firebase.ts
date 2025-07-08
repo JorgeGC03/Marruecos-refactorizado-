@@ -1,14 +1,5 @@
 import { initializeApp } from "firebase/app"
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  sendPasswordResetEmail,
-  updateProfile,
-} from "firebase/auth"
+import { getAuth, GoogleAuthProvider } from "firebase/auth"
 import {
   getFirestore,
   doc,
@@ -69,93 +60,25 @@ googleProvider.setCustomParameters({
 })
 
 // Auth functions
-export const signInWithGoogle = async () => {
-  try {
-    console.log("🔥 Attempting Google sign-in...")
-    const result = await signInWithPopup(auth, googleProvider)
-    console.log("✅ Google sign-in successful:", result.user.email)
-
-    // Create or update user document
-    await upsertUser(result.user, "google")
-
-    return result
-  } catch (error: any) {
-    console.error("❌ Google sign-in error:", error)
-
-    // Handle specific errors
-    if (error.code === "auth/popup-closed-by-user") {
-      throw new Error("Popup cerrado por el usuario")
-    } else if (error.code === "auth/popup-blocked") {
-      throw new Error("Popup bloqueado por el navegador")
-    } else if (error.code === "auth/network-request-failed") {
-      throw new Error("Error de conexión. Verifica tu internet")
-    } else if (error.code === "auth/unauthorized-domain") {
-      throw new Error(
-        "Dominio no autorizado en Firebase. Añádelo en Authentication → Configuración → Dominios autorizados",
-      )
-    }
-
-    throw error
-  }
+export async function signInWithGoogle() {
+  // Stub: immediately resolve
+  return Promise.resolve()
 }
 
-export const signInWithEmail = async (email: string, password: string) => {
-  try {
-    console.log("🔥 Attempting email sign-in for:", email)
-    const result = await signInWithEmailAndPassword(auth, email, password)
-    console.log("✅ Email sign-in successful:", result.user.email)
-
-    // Update last login
-    await touchLastLogin(result.user.uid)
-
-    return result
-  } catch (error: any) {
-    console.error("❌ Email sign-in error:", error)
-    throw new Error(getAuthErrorMessage(error.code))
-  }
+export async function signInWithEmail(_email: string, _password: string) {
+  return Promise.resolve()
 }
 
-export const signUpWithEmail = async (email: string, password: string, displayName: string) => {
-  try {
-    console.log("🔥 Creating account for:", email)
-    const result = await createUserWithEmailAndPassword(auth, email, password)
-
-    // Update user profile with display name
-    if (displayName) {
-      await updateProfile(result.user, { displayName })
-    }
-
-    // Create user document
-    await upsertUser({ ...result.user, displayName }, "email")
-
-    console.log("✅ Account created successfully:", result.user.email)
-    return result
-  } catch (error: any) {
-    console.error("❌ Error creando cuenta:", error)
-    throw new Error(getAuthErrorMessage(error.code))
-  }
+export async function signUpWithEmail(_e: string, _p: string, _n: string) {
+  return Promise.resolve()
 }
 
-export const resetPassword = async (email: string) => {
-  try {
-    console.log("🔥 Sending password reset email to:", email)
-    await sendPasswordResetEmail(auth, email)
-    console.log("✅ Password reset email sent")
-  } catch (error: any) {
-    console.error("❌ Password reset error:", error)
-    throw new Error(getAuthErrorMessage(error.code))
-  }
+export async function resetPassword(_email: string) {
+  return Promise.resolve()
 }
 
-export const signOutUser = async () => {
-  try {
-    console.log("🔥 Signing out user...")
-    await signOut(auth)
-    console.log("✅ User signed out successfully")
-  } catch (error: any) {
-    console.error("❌ Sign out error:", error)
-    throw error
-  }
+export async function signOutUser() {
+  return Promise.resolve()
 }
 
 // Helper function to create or update user document in Firestore

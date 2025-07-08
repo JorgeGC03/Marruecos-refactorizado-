@@ -80,9 +80,6 @@ export function WeatherWidget() {
           </div>
         ))}
       </div>
-      <div className="mb-4 p-3 rounded-md bg-[#fff3e6] text-[#2e1e0f] text-sm">
-        <span className="font-medium">Clima en Fez:</span> 22 °C · Soleado ☀️
-      </div>
     </div>
   )
 }
