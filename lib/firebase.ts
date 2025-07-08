@@ -1,6 +1,6 @@
 "use client"
 
-import { initializeApp, getApps, type FirebaseApp } from "firebase/app"
+import { initializeApp, getApps } from "firebase/app"
 import { getAuth, GoogleAuthProvider, type User } from "firebase/auth"
 import {
   getFirestore,
@@ -50,7 +50,7 @@ if (missingVars.length > 0) {
 }
 
 // Initialize Firebase
-export const firebaseApp: FirebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig)
+export const firebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig)
 
 export const auth = getAuth(firebaseApp)
 export const db = getFirestore(firebaseApp)
@@ -241,3 +241,6 @@ const getAuthErrorMessage = (errorCode: string): string => {
       return "Error de autenticación. Intenta de nuevo"
   }
 }
+
+// placeholder instance
+// placeholder auth object

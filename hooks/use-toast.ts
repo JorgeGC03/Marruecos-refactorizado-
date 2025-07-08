@@ -1,7 +1,8 @@
 "use client"
 
 import type * as React from "react"
-import { useState, useCallback } from "react"
+import { useCallback } from "react"
+import { toast } from "sonner"
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
 export * from "@/components/ui/use-toast"
@@ -140,28 +141,7 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">
 
 export function useToast() {
-  const [toasts, setToasts] = useState<Toast[]>([])
-
-  const toast = useCallback(({ ...props }: Omit<Toast, "id">) => {
-    const id = Math.random().toString(36).substr(2, 9)
-    const newToast = { id, ...props }
-
-    setToasts((prev) => [...prev, newToast])
-
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id))
-    }, TOAST_REMOVE_DELAY)
-
-    return { id }
-  }, [])
-
-  const dismiss = useCallback((toastId?: string) => {
-    setToasts((prev) => (toastId ? prev.filter((t) => t.id !== toastId) : []))
-  }, [])
-
-  return {
-    toast,
-    dismiss,
-    toasts,
-  }
+  const success = useCallback((msg: string) => toast.success(msg), [])
+  const error = useCallback((msg: string) => toast.error(msg), [])
+  return { success, error }
 }

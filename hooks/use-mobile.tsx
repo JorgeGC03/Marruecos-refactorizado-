@@ -2,16 +2,18 @@
 
 import { useEffect, useState } from "react"
 
-/** Returns true when `window.innerWidth` is below `breakpoint` (default 768 px). */
-export function useMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+/**
+ * Returns `true` when the viewport width is below 768 px.
+ */
+export function useMobile() {
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth < breakpoint)
-    update()
-    window.addEventListener("resize", update)
-    return () => window.removeEventListener("resize", update)
-  }, [breakpoint])
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
 
   return isMobile
 }

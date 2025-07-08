@@ -6,7 +6,7 @@ import { createContext, type ReactNode, useCallback, useContext, useEffect, useS
 /* Types                                                                      */
 /* -------------------------------------------------------------------------- */
 
-interface User {
+export interface User {
   uid: string
   email: string | null
 }
@@ -37,33 +37,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  /* In a real app you’d listen to Firebase auth state here.
-     For now we just mimic an async check so layout renders correctly. */
+  /* Pretend we’re checking an auth session on mount */
   useEffect(() => {
     let mounted = true
     ;(async () => {
-      try {
-        // Example async init (replace with onAuthStateChanged in real app)
-        await new Promise((r) => setTimeout(r, 200))
-        if (mounted) setUser(null) // no user yet
-      } finally {
-        if (mounted) setLoading(false)
-      }
+      await new Promise((r) => setTimeout(r, 150)) // fake IO delay
+      if (mounted) setLoading(false)
     })()
     return () => {
       mounted = false
     }
   }, [])
 
-  /* ---------------------------------------------------------------------- */
-  /*  Dummy sign-in / sign-out – replace with Firebase calls when ready.    */
-  /* ---------------------------------------------------------------------- */
-
-  const signIn = useCallback(async (email: string, _password: string) => {
-    // In production call signInWithEmailAndPassword(firebaseAuth, …)
+  /* Dummy sign-in / sign-out — replace with Firebase later */
+  const signIn = useCallback(async (email: string) => {
     setLoading(true)
     await new Promise((r) => setTimeout(r, 300))
-    setUser({ uid: "demo", email })
+    setUser({ uid: "demo-uid", email })
     setLoading(false)
   }, [])
 
