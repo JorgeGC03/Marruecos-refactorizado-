@@ -2,6 +2,7 @@ import "./globals.css"
 import { Roboto } from "next/font/google"
 import type { ReactNode } from "react"
 import type { Metadata } from "next"
+import { AuthProvider } from "@/hooks/use-auth"
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -12,13 +13,15 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Itinerario Marruecos",
   description: "Plan de viaje de 5 días por Marruecos",
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" className={roboto.className}>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   )
 }
