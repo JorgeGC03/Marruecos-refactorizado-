@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import {
-  Handshake,
   Plus,
   Save,
   Edit,
@@ -150,14 +149,12 @@ export function SharedPaymentsSection() {
   const categoryStats = getCategoryStats()
 
   return (
-    <div>
-      <h2 className="flex items-center gap-3 text-2xl font-bold mb-6">
-        <Handshake className="text-[#9c6644]" />
-        Pagos Compartidos
-      </h2>
+    <section>
+      <h2 className="text-xl font-semibold mb-2">Pagos compartidos</h2>
+      <p className="text-sm opacity-80">Próximamente podrás llevar la cuenta de los gastos comunes.</p>
 
+      {/* Summary Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        {/* Summary Cards */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -458,6 +455,6 @@ export function SharedPaymentsSection() {
           </CardContent>
         </Card>
       )}
-    </div>
+    </section>
   )
 }

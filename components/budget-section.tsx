@@ -1,3 +1,4 @@
+"use client"
 import { CreditCard, Calendar, Hotel, Utensils, Car, ShoppingBag, Calculator } from "lucide-react"
 
 const budgetDays = [
@@ -51,6 +52,12 @@ const budgetDays = [
   },
 ]
 
+const items = [
+  { label: "Alojamiento", value: "25 € / noche" },
+  { label: "Comida", value: "15 € / día" },
+  { label: "Transporte", value: "10 € / día" },
+]
+
 export function BudgetSection() {
   return (
     <div>
@@ -79,6 +86,19 @@ export function BudgetSection() {
           </div>
         ))}
       </div>
+      <section>
+        <h2 className="text-xl font-semibold mb-4">Presupuesto diario</h2>
+        <table className="w-full text-left border-collapse">
+          <tbody>
+            {items.map((i) => (
+              <tr key={i.label} className="border-b">
+                <td className="py-2 font-medium">{i.label}</td>
+                <td className="py-2 text-right">{i.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </div>
   )
 }

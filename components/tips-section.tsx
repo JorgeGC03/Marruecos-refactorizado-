@@ -1,3 +1,4 @@
+"use client"
 import { Utensils, Coffee, Store, Camera, Users, CreditCard } from "lucide-react"
 
 const tips = [
@@ -14,12 +15,14 @@ const tips = [
   {
     icon: Store,
     title: "Mercados locales",
-    description: "Souk de Fez y Zoco de Marrakech son perfectos para comprar artesanía y recuerdos.",
+    description:
+      "Souk de Fez y Zoco de Marrakech son perfectos para comprar artesanía y recuerdos. Regatea siempre en los zocos.",
   },
   {
     icon: Camera,
     title: "Lugares turísticos",
-    description: "Medinas, palacios, mezquitas, desierto de Merzouga y mucho más por descubrir.",
+    description:
+      "Medinas, palacios, mezquitas, desierto de Merzouga y mucho más por descubrir. Hidrátate: el desierto es seco incluso en invierno.",
   },
   {
     icon: Users,
@@ -29,29 +32,25 @@ const tips = [
   {
     icon: CreditCard,
     title: "Moneda",
-    description: "La moneda es el Dirham marroquí (MAD). Lleva efectivo para mercados pequeños.",
+    description: "La moneda es el Dirham marroquí (MAD). Lleva efectivo; no todos aceptan tarjeta.",
   },
 ]
 
 export function TipsSection() {
   return (
-    <div>
-      <h2 className="flex items-center gap-3 text-2xl font-bold mb-6">
-        <Camera className="text-[#9c6644]" />
-        Tips y Recomendaciones
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <section className="space-y-4">
+      <h2 className="text-xl font-semibold">Consejos de viaje</h2>
+      <ul className="list-disc list-inside">
         {tips.map((tip, index) => (
-          <div
-            key={index}
-            className="bg-white border-2 border-[#d4a373] rounded-lg p-4 sm:p-6 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-[#e6ccb2] cursor-pointer"
-          >
-            <tip.icon size={32} className="text-[#9c6644] mx-auto mb-3 sm:w-10 sm:h-10" />
-            <h3 className="font-semibold mb-2 text-sm sm:text-base">{tip.title}</h3>
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{tip.description}</p>
-          </div>
+          <li key={index}>
+            <div className="bg-white border-2 border-[#d4a373] rounded-lg p-4 sm:p-6 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-[#e6ccb2] cursor-pointer">
+              {tip.icon && <tip.icon size={32} className="text-[#9c6644] mx-auto mb-3 sm:w-10 sm:h-10" />}
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">{tip.title}</h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{tip.description}</p>
+            </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </section>
   )
 }

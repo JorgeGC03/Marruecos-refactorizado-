@@ -6,12 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  })
+  const target = new Date("2025-05-01T09:00:00Z").getTime()
+  const [timeLeft, setTimeLeft] = useState(target - Date.now())
   const [isEditing, setIsEditing] = useState(false)
   const [tripDate, setTripDate] = useState<Date | null>(null)
   const [dateInput, setDateInput] = useState("")
@@ -41,14 +37,9 @@ export function CountdownTimer() {
       const distance = tripDate.getTime() - now
 
       if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000),
-        })
+        setTimeLeft(distance)
       } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+        setTimeLeft(0)
       }
     }, 1000)
 
@@ -70,6 +61,11 @@ export function CountdownTimer() {
     }
     setIsEditing(false)
   }
+
+  if (timeLeft < 0) return null
+
+  const days = Math.floor(timeLeft / 86_400_000)
+  const hours = Math.floor((timeLeft % 86_400_000) / 3_600_000)
 
   return (
     <div className="bg-gradient-to-r from-[#9c6644] to-[#d4a373] rounded-lg p-4 text-white mb-6">
@@ -123,23 +119,8 @@ export function CountdownTimer() {
         )
       )}
 
-      <div className="grid grid-cols-4 gap-2 text-center">
-        <div className="bg-white/20 rounded-lg p-2">
-          <div className="text-xl sm:text-2xl font-bold">{timeLeft.days}</div>
-          <div className="text-xs opacity-90">Días</div>
-        </div>
-        <div className="bg-white/20 rounded-lg p-2">
-          <div className="text-xl sm:text-2xl font-bold">{timeLeft.hours}</div>
-          <div className="text-xs opacity-90">Horas</div>
-        </div>
-        <div className="bg-white/20 rounded-lg p-2">
-          <div className="text-xl sm:text-2xl font-bold">{timeLeft.minutes}</div>
-          <div className="text-xs opacity-90">Min</div>
-        </div>
-        <div className="bg-white/20 rounded-lg p-2">
-          <div className="text-xl sm:text-2xl font-bold">{timeLeft.seconds}</div>
-          <div className="text-xs opacity-90">Seg</div>
-        </div>
+      <div className="mb-4 p-3 rounded-md bg-[#fff3e6] text-[#9c6644] text-sm">
+        Faltan <strong>{days}</strong> días y <strong>{hours}</strong> h para tu aventura 🇲🇦
       </div>
     </div>
   )

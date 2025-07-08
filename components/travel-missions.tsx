@@ -142,6 +142,60 @@ const missions: Mission[] = [
     },
     completed: false,
   },
+  {
+    id: 1,
+    city: "General",
+    title: "Tomar té a la menta con un local",
+    description: "Tomar té a la menta con un local",
+    location: {
+      name: "General",
+      coordinates: { lat: 0, lng: 0 },
+      radius: 0,
+    },
+    reward: {
+      type: "points",
+      value: 50,
+      icon: Star,
+      description: "+50 puntos de cultura",
+    },
+    completed: false,
+  },
+  {
+    id: 2,
+    city: "General",
+    title: "Aprender 3 palabras en árabe",
+    description: "Aprender 3 palabras en árabe",
+    location: {
+      name: "General",
+      coordinates: { lat: 0, lng: 0 },
+      radius: 0,
+    },
+    reward: {
+      type: "badge",
+      value: "Bilingüe",
+      icon: Medal,
+      description: "Insignia de Bilingüe",
+    },
+    completed: false,
+  },
+  {
+    id: 3,
+    city: "General",
+    title: "Ver el amanecer en el desierto",
+    description: "Ver el amanecer en el desierto",
+    location: {
+      name: "General",
+      coordinates: { lat: 0, lng: 0 },
+      radius: 0,
+    },
+    reward: {
+      type: "title",
+      value: "Observador del Desierto",
+      icon: Crown,
+      description: "Título especial: Observador del Desierto",
+    },
+    completed: false,
+  },
 ]
 
 export function TravelMissions() {
