@@ -1,6 +1,6 @@
 "use client"
 
-import { initializeApp } from "firebase/app"
+import { initializeApp, getApps, type FirebaseApp } from "firebase/app"
 import { GoogleAuthProvider } from "firebase/auth"
 import {
   getFirestore,
@@ -50,8 +50,8 @@ if (missingVars.length > 0) {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app) // Declare db variable here
+const firebaseApp: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+const db = getFirestore(firebaseApp) // Declare db variable here
 
 // Mock auth object
 export const auth = {

@@ -42,7 +42,8 @@ export interface Meal {
   cost?: number
 }
 
-export async function generateTrip(preferences: TripPreferences): Promise<GeneratedTrip> {
+// CHANGE: rename function
+export async function generateTripWithAI(preferences: TripPreferences): Promise<GeneratedTrip> {
   try {
     const prompt = `Generate a detailed ${preferences.duration}-day Morocco travel itinerary for ${preferences.groupSize} people with a ${preferences.budget} budget. 
     
@@ -137,3 +138,6 @@ export async function generateTrip(preferences: TripPreferences): Promise<Genera
     }
   }
 }
+
+// OPTIONAL alias so old & new code compile
+export { generateTripWithAI as generateTrip }

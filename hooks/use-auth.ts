@@ -1,69 +1,45 @@
 "use client"
 
-import { useState, useEffect, createContext, useContext, type ReactNode } from "react"
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, type User } from "firebase/auth"
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
+import { firebaseApp } from "@/lib/firebase"
 
-interface User {
-  uid: string
-  displayName?: string | null
-  email?: string | null
-  photoURL?: string | null
-}
-
-interface UserProgress {
-  completedMissions: string[]
-  totalExpenses: number
-  lastUpdated: Date
-}
-
-interface AuthContextType {
+interface AuthContextValue {
   user: User | null
-  userProgress: UserProgress | null
   loading: boolean
-  refreshProgress: () => Promise<void>
+  loginWithGoogle: () => Promise<void>
+  logout: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  userProgress: null,
-  loading: true,
-  refreshProgress: async () => {},
-})
-
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider")
-  }
-  return context
-}
+const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [userProgress, setUserProgress] = useState<UserProgress | null>(null)
   const [loading, setLoading] = useState(true)
-
-  const refreshProgress = async () => {
-    if (user) {
-      // Simulate fetching user progress
-      const progress: UserProgress = {
-        completedMissions: [],
-        totalExpenses: 0,
-        lastUpdated: new Date(),
-      }
-      setUserProgress(progress)
-    }
-  }
+  const auth = getAuth(firebaseApp)
 
   useEffect(() => {
-    // Simulate auth state change
-    const timer = setTimeout(() => {
+    const unsub = onAuthStateChanged(auth, (current) => {
+      setUser(current)
       setLoading(false)
-    }, 1000)
+    })
+    return unsub
+  }, [auth])
 
-    return () => clearTimeout(timer)
-  }, [])
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider()
+    await signInWithPopup(auth, provider)
+  }
 
-  return (
-    <AuthContext.Provider value={{ user, userProgress, loading, refreshProgress }}>{children}</AuthContext.Provider>
-  )
+  const logout = async () => {
+    await signOut(auth)
+  }
+
+  return <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>{children}</AuthContext.Provider>
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>")
+  return ctx
 }
