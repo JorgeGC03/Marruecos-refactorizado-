@@ -1,38 +1,69 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { useState, useEffect, createContext, useContext, type ReactNode } from "react"
 
 interface User {
-  displayName?: string
-  email?: string
-  photoURL?: string
+  uid: string
+  displayName?: string | null
+  email?: string | null
+  photoURL?: string | null
 }
 
-interface AuthContextValue {
+interface UserProgress {
+  completedMissions: string[]
+  totalExpenses: number
+  lastUpdated: Date
+}
+
+interface AuthContextType {
   user: User | null
+  userProgress: UserProgress | null
   loading: boolean
+  refreshProgress: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextValue>({ user: null, loading: false })
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  userProgress: null,
+  loading: true,
+  refreshProgress: async () => {},
+})
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider")
+  }
+  return context
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // In a real app you would subscribe to Firebase auth.
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [userProgress, setUserProgress] = useState<UserProgress | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  // Fake auto-login after 1 s (remove in production)
+  const refreshProgress = async () => {
+    if (user) {
+      // Simulate fetching user progress
+      const progress: UserProgress = {
+        completedMissions: [],
+        totalExpenses: 0,
+        lastUpdated: new Date(),
+      }
+      setUserProgress(progress)
+    }
+  }
+
   useEffect(() => {
-    setLoading(true)
-    const t = setTimeout(() => {
-      setUser(null) // still logged-out by default
+    // Simulate auth state change
+    const timer = setTimeout(() => {
       setLoading(false)
     }, 1000)
-    return () => clearTimeout(t)
+
+    return () => clearTimeout(timer)
   }, [])
 
-  return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>
-}
-
-export function useAuth() {
-  return useContext(AuthContext)
+  return (
+    <AuthContext.Provider value={{ user, userProgress, loading, refreshProgress }}>{children}</AuthContext.Provider>
+  )
 }

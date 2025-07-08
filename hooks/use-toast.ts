@@ -1,18 +1,19 @@
 "use client"
 
-// Inspired by react-hot-toast library
 import type * as React from "react"
+import { useState, useCallback } from "react"
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const TOAST_REMOVE_DELAY = 5000
 
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  variant?: "default" | "destructive"
 }
 
 const actionTypes = {
@@ -137,38 +138,29 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
-function toast({ ...props }: Toast) {
-  const id = genId()
-
-  const update = (props: ToasterToast) =>
-    dispatch({
-      type: "UPDATE_TOAST",
-      toast: { ...props, id },
-    })
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
-
-  dispatch({
-    type: "ADD_TOAST",
-    toast: {
-      ...props,
-      id,
-      open: true,
-      onOpenChange: (open) => {
-        if (!open) dismiss()
-      },
-    },
-  })
-
-  return {
-    id: id,
-    dismiss,
-    update,
-  }
-}
-
 export function useToast() {
+  const [toasts, setToasts] = useState<Toast[]>([])
+
+  const toast = useCallback(({ ...props }: Omit<Toast, "id">) => {
+    const id = Math.random().toString(36).substr(2, 9)
+    const newToast = { id, ...props }
+
+    setToasts((prev) => [...prev, newToast])
+
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id))
+    }, TOAST_REMOVE_DELAY)
+
+    return { id }
+  }, [])
+
+  const dismiss = useCallback((toastId?: string) => {
+    setToasts((prev) => (toastId ? prev.filter((t) => t.id !== toastId) : []))
+  }, [])
+
   return {
-    toast: (msg: string) => window.alert(msg),
-    dismiss: () => {},
+    toast,
+    dismiss,
+    toasts,
   }
 }
