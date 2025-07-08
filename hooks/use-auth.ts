@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react"
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -37,11 +37,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  /* Pretend we’re checking an auth session on mount */
+  /* Simulate an async auth-status check on mount. Replace with real listener. */
   useEffect(() => {
     let mounted = true
     ;(async () => {
-      await new Promise((r) => setTimeout(r, 150)) // fake IO delay
+      await new Promise((r) => setTimeout(r, 150))
       if (mounted) setLoading(false)
     })()
     return () => {
@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  /* Dummy sign-in / sign-out — replace with Firebase later */
+  /* Dummy sign-in / sign-out — swap for Firebase or another provider later. */
   const signIn = useCallback(async (email: string) => {
     setLoading(true)
     await new Promise((r) => setTimeout(r, 300))
