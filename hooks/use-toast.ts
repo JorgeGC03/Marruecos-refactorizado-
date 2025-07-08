@@ -4,6 +4,7 @@ import type * as React from "react"
 import { useState, useCallback } from "react"
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
+export * from "@/components/ui/use-toast"
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 5000

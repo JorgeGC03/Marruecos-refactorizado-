@@ -1,7 +1,7 @@
 "use client"
 
-import { initializeApp, getApps, type FirebaseApp } from "firebase/app"
-import { GoogleAuthProvider } from "firebase/auth"
+import { initializeApp, getApps, getApp } from "firebase/app"
+import { getAuth, GoogleAuthProvider, type User } from "firebase/auth"
 import {
   getFirestore,
   doc,
@@ -50,13 +50,10 @@ if (missingVars.length > 0) {
 }
 
 // Initialize Firebase
-export const firebaseApp: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-const db = getFirestore(firebaseApp) // Declare db variable here
+export const firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 
-// Mock auth object
-export const auth = {
-  currentUser: null as User | null,
-}
+export const auth = getAuth(firebaseApp)
+export const db = getFirestore(firebaseApp)
 
 // Google Auth Provider
 const googleProvider = new GoogleAuthProvider()
@@ -190,17 +187,6 @@ export async function getPublicTrips(limit = 10) {
 }
 
 // User Progress
-// export interface UserProgress {
-//   userId: string
-//   totalTrips: number
-//   completedMissions: number
-//   totalPoints: number
-//   badges: string[]
-//   titles: string[]
-//   level: number
-//   updatedAt: Timestamp
-// }
-
 export interface UserProgress {
   completedMissions: string[]
   totalExpenses: number
@@ -216,45 +202,10 @@ export const onAuthStateChanged = (auth: any, callback: (user: User | null) => v
   return () => {}
 }
 
-// export async function updateUserProgress(userId: string, progress: Partial<UserProgress>) {
-//   try {
-//     await setDoc(doc(db, "userProgress", userId), { ...progress, userId, updatedAt: Timestamp.now() }, { merge: true })
-//   } catch (error) {
-//     console.error("❌ Error actualizando progreso:", error)
-//     throw error
-//   }
-// }
-
 export const updateUserProgress = async (uid: string, progress: Partial<UserProgress>): Promise<void> => {
   // Mock update function
   console.log("Updating user progress:", uid, progress)
 }
-
-// export async function getUserProgress(userId: string): Promise<UserProgress | null> {
-//   try {
-//     const ref = doc(db, "userProgress", userId)
-//     const snap = await getDoc(ref)
-
-//     if (snap.exists()) return snap.data() as UserProgress
-
-//     // Crear progreso inicial si no existe
-//     const initial: UserProgress = {
-//       userId,
-//       totalTrips: 0,
-//       completedMissions: 0,
-//       totalPoints: 0,
-//       badges: [],
-//       titles: [],
-//       level: 1,
-//       updatedAt: Timestamp.now(),
-//     }
-//     await setDoc(ref, initial)
-//     return initial
-//   } catch (error) {
-//     console.error("❌ Error obteniendo progreso:", error)
-//     return null
-//   }
-// }
 
 // Mock user progress
 export const getUserProgress = async (uid: string): Promise<UserProgress> => {
@@ -289,12 +240,4 @@ const getAuthErrorMessage = (errorCode: string): string => {
     default:
       return "Error de autenticación. Intenta de nuevo"
   }
-}
-
-// Mock Firebase implementation for development
-export interface User {
-  uid: string
-  displayName?: string | null
-  email?: string | null
-  photoURL?: string | null
 }

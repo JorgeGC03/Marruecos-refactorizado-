@@ -1,5 +1,5 @@
 import { generateText } from "ai"
-import { groq } from "@ai-sdk/groq"
+import { openai } from "@ai-sdk/openai"
 
 export interface TripPreferences {
   budget: string
@@ -43,7 +43,7 @@ export interface Meal {
 }
 
 // CHANGE: rename function
-export async function generateTripWithAI(preferences: TripPreferences): Promise<GeneratedTrip> {
+export async function generateTripWithAI(preferences: TripPreferences): Promise<string> {
   try {
     const prompt = `Generate a detailed ${preferences.duration}-day Morocco travel itinerary for ${preferences.groupSize} people with a ${preferences.budget} budget. 
     
@@ -86,22 +86,18 @@ export async function generateTripWithAI(preferences: TripPreferences): Promise<
     
     Focus on authentic Moroccan experiences, include specific locations in Morocco, and provide realistic costs in USD.`
 
-    const { text } = await generateText({
-      model: groq("llama-3.1-70b-versatile"),
+    const text = await generateText({
+      model: openai("gpt-4o"),
+      system: "You are a seasoned travel planner. Return a concise, well-formatted itinerary.",
       prompt,
-      temperature: 0.7,
     })
 
-    // Parse the JSON response
-    const cleanedText = text.replace(/```json\n?|\n?```/g, "").trim()
-    const generatedTrip = JSON.parse(cleanedText) as GeneratedTrip
-
-    return generatedTrip
+    return text
   } catch (error) {
     console.error("Error generating trip:", error)
 
     // Return a fallback trip if AI generation fails
-    return {
+    return JSON.stringify({
       title: "5-Day Morocco Adventure",
       description: "A wonderful journey through Morocco's imperial cities and desert landscapes.",
       itinerary: [
@@ -135,7 +131,7 @@ export async function generateTripWithAI(preferences: TripPreferences): Promise<
         "Dress modestly when visiting religious sites",
         "Bargain respectfully in souks",
       ],
-    }
+    })
   }
 }
 

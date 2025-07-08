@@ -1,16 +1,20 @@
 "use client"
+
 import { useEffect, useState } from "react"
 
-export function useMobile(breakpointPx = 768) {
+/**
+ * Detect whether the viewport width is smaller than the provided breakpoint
+ * (default = 640 px, Tailwind’s `sm`).
+ */
+export function useMobile(breakpoint = 640) {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia(`(max-width:${breakpointPx}px)`)
-    const listener = () => setIsMobile(mq.matches)
-    listener()
-    mq.addEventListener("change", listener)
-    return () => mq.removeEventListener("change", listener)
-  }, [breakpointPx])
+    const handle = () => setIsMobile(window.innerWidth < breakpoint)
+    handle()
+    window.addEventListener("resize", handle)
+    return () => window.removeEventListener("resize", handle)
+  }, [breakpoint])
 
   return isMobile
 }
