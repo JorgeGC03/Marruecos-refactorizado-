@@ -2,18 +2,15 @@
 
 import { useEffect, useState } from "react"
 
-/**
- * Detect whether the viewport width is smaller than the provided breakpoint
- * (default = 640 px, Tailwind’s `sm`).
- */
-export function useMobile(breakpoint = 640) {
-  const [isMobile, setIsMobile] = useState(false)
+/** Returns true when `window.innerWidth` is below `breakpoint` (default 768 px). */
+export function useMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
   useEffect(() => {
-    const handle = () => setIsMobile(window.innerWidth < breakpoint)
-    handle()
-    window.addEventListener("resize", handle)
-    return () => window.removeEventListener("resize", handle)
+    const update = () => setIsMobile(window.innerWidth < breakpoint)
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
   }, [breakpoint])
 
   return isMobile

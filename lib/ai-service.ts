@@ -42,97 +42,17 @@ export interface Meal {
   cost?: number
 }
 
-// CHANGE: rename function
-export async function generateTripWithAI(preferences: TripPreferences): Promise<string> {
-  try {
-    const prompt = `Generate a detailed ${preferences.duration}-day Morocco travel itinerary for ${preferences.groupSize} people with a ${preferences.budget} budget. 
-    
-    Interests: ${preferences.interests.join(", ")}
-    Accommodation preference: ${preferences.accommodation}
-    Transportation: ${preferences.transportation}
-    
-    Please provide a JSON response with the following structure:
-    {
-      "title": "Trip title",
-      "description": "Brief description",
-      "itinerary": [
-        {
-          "day": 1,
-          "title": "Day title",
-          "activities": [
-            {
-              "time": "09:00",
-              "name": "Activity name",
-              "description": "Activity description",
-              "location": "Location",
-              "cost": 50,
-              "duration": "2 hours"
-            }
-          ],
-          "meals": [
-            {
-              "type": "breakfast",
-              "name": "Meal name",
-              "location": "Restaurant location",
-              "cost": 15
-            }
-          ],
-          "accommodation": "Hotel name and location"
-        }
-      ],
-      "estimatedCost": 1200,
-      "recommendations": ["Recommendation 1", "Recommendation 2"]
-    }
-    
-    Focus on authentic Moroccan experiences, include specific locations in Morocco, and provide realistic costs in USD.`
-
-    const text = await generateText({
-      model: openai("gpt-4o"),
-      system: "You are a seasoned travel planner. Return a concise, well-formatted itinerary.",
-      prompt,
-    })
-
-    return text
-  } catch (error) {
-    console.error("Error generating trip:", error)
-
-    // Return a fallback trip if AI generation fails
-    return JSON.stringify({
-      title: "5-Day Morocco Adventure",
-      description: "A wonderful journey through Morocco's imperial cities and desert landscapes.",
-      itinerary: [
-        {
-          day: 1,
-          title: "Arrival in Marrakech",
-          activities: [
-            {
-              time: "14:00",
-              name: "Jemaa el-Fnaa Square",
-              description: "Explore the famous main square of Marrakech",
-              location: "Medina, Marrakech",
-              cost: 0,
-              duration: "2 hours",
-            },
-          ],
-          meals: [
-            {
-              type: "dinner",
-              name: "Traditional Tagine",
-              location: "Local restaurant in Medina",
-              cost: 25,
-            },
-          ],
-          accommodation: "Riad in Marrakech Medina",
-        },
-      ],
-      estimatedCost: 800,
-      recommendations: [
-        "Learn basic Arabic phrases",
-        "Dress modestly when visiting religious sites",
-        "Bargain respectfully in souks",
-      ],
-    })
-  }
+/**
+ * Generates a travel itinerary (or any text) via OpenAI GPT-4o.
+ * You can tailor the system/prompt for better results.
+ */
+export async function generateTripWithAI(prompt: string) {
+  const { text } = await generateText({
+    model: openai("gpt-4o"),
+    system: "You are an expert travel planner. Return a concise 5-day itinerary in Markdown.",
+    prompt,
+  })
+  return text
 }
 
 // OPTIONAL alias so old & new code compile
