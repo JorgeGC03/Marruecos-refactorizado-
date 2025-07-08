@@ -1,25 +1,20 @@
 "use client"
 import { GoogleAuthProvider, type User } from "firebase/auth"
 import { collection, addDoc, query, where, getDocs, orderBy, Timestamp } from "firebase/firestore"
+import { initializeApp } from "firebase/app"
+import { getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
 
-// Mock Firebase configuration
-// Replace with actual Firebase config when ready
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "mock-api-key",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "mock-auth-domain",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "mock-project-id",
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "mock-storage-bucket",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "mock-sender-id",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "mock-app-id",
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "mock-measurement-id",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 }
-
-// Debug: Log configuration (remove in production)
-console.log("🔍 Debug Firebase Config:", {
-  apiKey: firebaseConfig.apiKey ? "✅ Set" : "❌ Missing",
-  authDomain: firebaseConfig.authDomain ? "✅ Set" : "❌ Missing",
-  projectId: firebaseConfig.projectId ? "✅ Set" : "❌ Missing",
-})
 
 // Validate required environment variables
 const requiredEnvVars = [
@@ -37,31 +32,10 @@ if (missingVars.length > 0) {
   throw new Error(`Missing required Firebase environment variables: ${missingVars.join(", ")}`)
 }
 
-// Mock Firebase app and auth objects
-export const firebaseApp = {
-  name: "mock-app",
-  options: firebaseConfig,
-}
-
-export const auth = {
-  currentUser: null,
-  signInWithEmailAndPassword: async (email: string, password: string) => {
-    console.log("Mock sign in:", email)
-    return { user: { uid: "mock-uid", email } }
-  },
-  signOut: async () => {
-    console.log("Mock sign out")
-  },
-}
-
-export const db = {
-  collection: (name: string) => ({
-    doc: (id: string) => ({
-      set: async (data: any) => console.log("Mock set:", name, id, data),
-      get: async () => ({ exists: false, data: () => null }),
-    }),
-  }),
-}
+// Firebase app and auth objects
+export const firebaseApp = initializeApp(firebaseConfig)
+export const auth = getAuth(firebaseApp)
+export const db = getFirestore(firebaseApp)
 
 // Google Auth Provider
 const googleProvider = new GoogleAuthProvider()
@@ -76,7 +50,8 @@ export async function signInWithGoogle() {
 }
 
 export async function signInWithEmail(email: string, password: string) {
-  return auth.signInWithEmailAndPassword(email, password)
+  // Placeholder for actual Firebase sign-in logic
+  return Promise.resolve()
 }
 
 export async function signUpWithEmail(_e: string, _p: string, _n: string) {
@@ -187,32 +162,22 @@ export async function getPublicTrips(limit = 10) {
 }
 
 // User Progress
-export interface UserProgress {
+export type UserProgress = {
   completedMissions: string[]
   totalExpenses: number
-  lastUpdated: Date
 }
 
-// Mock functions
 export const onAuthStateChanged = (auth: any, callback: (user: User | null) => void) => {
-  // Simulate no user initially
-  setTimeout(() => callback(null), 100)
-
-  // Return unsubscribe function
+  // Mock implementation - replace with real Firebase auth
+  callback(null)
   return () => {}
 }
 
-export const updateUserProgress = async (uid: string, progress: Partial<UserProgress>): Promise<void> => {
-  // Mock update function
-  console.log("Updating user progress:", uid, progress)
-}
-
-// Mock user progress
-export const getUserProgress = async (uid: string): Promise<UserProgress> => {
+export const getUserProgress = async (uid: string) => {
+  // Mock implementation
   return {
     completedMissions: [],
     totalExpenses: 0,
-    lastUpdated: new Date(),
   }
 }
 
