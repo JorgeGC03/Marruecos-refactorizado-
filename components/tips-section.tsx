@@ -40,15 +40,15 @@ export function TipsSection() {
         <Camera className="text-[#9c6644]" />
         Tips y Recomendaciones
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {tips.map((tip, index) => (
           <div
             key={index}
-            className="bg-white border-2 border-[#d4a373] rounded-lg p-6 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-[#e6ccb2] cursor-pointer"
+            className="bg-white border-2 border-[#d4a373] rounded-lg p-4 sm:p-6 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-[#e6ccb2] cursor-pointer"
           >
-            <tip.icon size={40} className="text-[#9c6644] mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">{tip.title}</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{tip.description}</p>
+            <tip.icon size={32} className="text-[#9c6644] mx-auto mb-3 sm:w-10 sm:h-10" />
+            <h3 className="font-semibold mb-2 text-sm sm:text-base">{tip.title}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{tip.description}</p>
           </div>
         ))}
       </div>

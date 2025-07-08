@@ -90,22 +90,22 @@ const days = [
 export function ItinerarySection() {
   return (
     <div>
-      <h2 className="flex items-center gap-3 text-2xl font-bold mb-6">
+      <h2 className="flex items-center gap-3 text-xl sm:text-2xl font-bold mb-6">
         <Calendar className="text-[#9c6644]" />
         Nuestro Viaje Día a Día
       </h2>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {days.map((day, index) => (
-          <div key={index} className="bg-white rounded-lg p-6 shadow-lg border border-[#d4a373]/20">
-            <h3 className="flex items-center gap-3 text-xl font-semibold mb-4 text-[#9c6644]">
-              <day.icon size={24} />
-              {day.title}
+          <div key={index} className="bg-white rounded-lg p-4 sm:p-6 shadow-lg border border-[#d4a373]/20">
+            <h3 className="flex items-center gap-3 text-lg sm:text-xl font-semibold mb-4 text-[#9c6644]">
+              <day.icon size={20} className="sm:w-6 sm:h-6" />
+              <span className="text-sm sm:text-lg">{day.title}</span>
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               {day.activities.map((activity, actIndex) => (
                 <li key={actIndex} className="flex items-start gap-3">
-                  <activity.icon size={16} className="text-[#9c6644] mt-1 flex-shrink-0" />
-                  <span className="text-sm leading-relaxed">{activity.text}</span>
+                  <activity.icon size={14} className="text-[#9c6644] mt-1 flex-shrink-0 sm:w-4 sm:h-4" />
+                  <span className="text-xs sm:text-sm leading-relaxed">{activity.text}</span>
                 </li>
               ))}
             </ul>

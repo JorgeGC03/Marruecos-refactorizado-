@@ -34,18 +34,18 @@ export function LinksSection() {
         <Link className="text-[#9c6644]" />
         Enlaces útiles
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         {links.map((link, index) => (
           <a
             key={index}
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white border-2 border-[#d4a373] rounded-lg p-6 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-[#e6ccb2] block text-[#2e1e0f] no-underline"
+            className="bg-white border-2 border-[#d4a373] rounded-lg p-4 sm:p-6 text-center transition-all duration-300 hover:transform hover:-translate-y-2 hover:bg-[#e6ccb2] block text-[#2e1e0f] no-underline"
           >
-            <link.icon size={40} className="text-[#9c6644] mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">{link.title}</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{link.description}</p>
+            <link.icon size={32} className="text-[#9c6644] mx-auto mb-3 sm:w-10 sm:h-10" />
+            <h3 className="font-semibold mb-2 text-sm sm:text-base">{link.title}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{link.description}</p>
           </a>
         ))}
       </div>

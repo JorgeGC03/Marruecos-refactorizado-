@@ -58,21 +58,21 @@ export function BudgetSection() {
         <CreditCard className="text-[#9c6644]" />
         Presupuesto Estimado por Día
       </h2>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {budgetDays.map((day, index) => (
-          <div key={index} className="bg-white rounded-lg p-6 shadow-lg">
-            <h3 className="flex items-center gap-3 text-lg font-semibold mb-4 text-[#9c6644]">
-              <Calendar size={20} />
+          <div key={index} className="bg-white rounded-lg p-4 sm:p-6 shadow-lg">
+            <h3 className="flex items-center gap-3 text-base sm:text-lg font-semibold mb-4 text-[#9c6644]">
+              <Calendar size={18} className="sm:w-5 sm:h-5" />
               {day.title}
             </h3>
             <div className="space-y-2">
               {day.items.map((item, itemIndex) => (
                 <div
                   key={itemIndex}
-                  className={`flex items-center gap-3 ${item.isTotal ? "font-bold border-t pt-2 mt-3" : ""}`}
+                  className={`flex items-center gap-3 text-sm sm:text-base ${item.isTotal ? "font-bold border-t pt-2 mt-3" : ""}`}
                 >
-                  <item.icon size={16} className="text-[#9c6644]" />
-                  <span className="text-sm">{item.text}</span>
+                  <item.icon size={14} className="text-[#9c6644] sm:w-4 sm:h-4" />
+                  <span>{item.text}</span>
                 </div>
               ))}
             </div>
