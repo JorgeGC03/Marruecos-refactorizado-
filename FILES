@@ -1,0 +1,191 @@
+components/ui/hover-card.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/input-otp.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/input.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/label.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/menubar.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/navigation-menu.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/pagination.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/popover.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/progress.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/radio-group.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/resizable.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/scroll-area.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/select.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/separator.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/sheet.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/skeleton.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/slider.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/sonner.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/switch.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/table.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/tabs.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/textarea.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/toast.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/toaster.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/toggle-group.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/toggle.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+components/ui/tooltip.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+hooks/use-mobile.tsx:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+hooks/use-toast.ts:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+hooks/use-auth.ts:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+lib/ai-service.ts:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
+
+lib/firebase.ts:
+\`\`\`ts
+// Stub module – real implementation to be added later.
+export {}
+\`\`\`
