@@ -1,22 +1,56 @@
-import { generateText } from "ai"
-import { openai } from "@ai-sdk/openai"
+export interface TripPreferences {
+  destination: string
+  duration: number
+  budget: string
+  interests: string[]
+  travelStyle: string
+}
 
-/**
- * Calls an LLM and returns a (very) simple itinerary object.
- * Swap the prompt/schema with your own when you need richer output.
- */
-export async function generateTripWithAI(destination: string, days: number) {
-  const { text } = await generateText({
-    model: openai("gpt-4o"),
-    system:
-      "You are an expert travel planner. Reply ONLY with a JSON array of days. Each day has a 'title' and 'activities' array.",
-    prompt: `Create a ${days}-day trip plan for ${destination}.`,
-  })
+export interface GeneratedTrip {
+  title: string
+  description: string
+  days: Array<{
+    day: number
+    title: string
+    activities: string[]
+    meals: string[]
+    accommodation?: string
+  }>
+  budget: {
+    total: string
+    breakdown: Record<string, string>
+  }
+  tips: string[]
+}
 
-  // Best-effort JSON parse; fall back to raw text if parsing fails.
-  try {
-    return JSON.parse(text)
-  } catch {
-    return text
+export async function generateTripWithAI(preferences: TripPreferences): Promise<GeneratedTrip> {
+  // Mock AI generation - replace with actual AI service call
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+
+  return {
+    title: `${preferences.duration} días en ${preferences.destination}`,
+    description: `Un viaje increíble de ${preferences.duration} días por ${preferences.destination} adaptado a tu estilo de viaje ${preferences.travelStyle}.`,
+    days: Array.from({ length: preferences.duration }, (_, i) => ({
+      day: i + 1,
+      title: `Día ${i + 1} - Explorando ${preferences.destination}`,
+      activities: ["Visita a lugares emblemáticos", "Experiencia cultural local", "Tiempo libre para explorar"],
+      meals: ["Desayuno en hotel", "Almuerzo en restaurante local", "Cena tradicional"],
+      accommodation: i === 0 ? "Hotel recomendado en el centro" : undefined,
+    })),
+    budget: {
+      total: preferences.budget,
+      breakdown: {
+        Alojamiento: "40%",
+        Comida: "30%",
+        Actividades: "20%",
+        Transporte: "10%",
+      },
+    },
+    tips: [
+      "Lleva ropa cómoda para caminar",
+      "Prueba la comida local",
+      "Respeta las costumbres locales",
+      "Mantén tus documentos seguros",
+    ],
   }
 }

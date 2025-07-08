@@ -1,21 +1,18 @@
 "use client"
+import { useCallback, useState } from "react"
 
-import type * as React from "react"
-import { useCallback } from "react"
-import { toast } from "sonner"
-
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
-export * from "@/components/ui/use-toast"
+export interface Toast {
+  id: string
+  title?: string
+  description?: string
+  variant?: "default" | "destructive"
+}
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 5000
 
-type ToasterToast = ToastProps & {
-  id: string
-  title?: React.ReactNode
-  description?: React.ReactNode
-  action?: ToastActionElement
-  variant?: "default" | "destructive"
+type ToasterToast = Toast & {
+  open: boolean
 }
 
 const actionTypes = {
@@ -138,10 +135,29 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
-
 export function useToast() {
-  const success = useCallback((msg: string) => toast.success(msg), [])
-  const error = useCallback((msg: string) => toast.error(msg), [])
-  return { success, error }
+  const [toasts, setToasts] = useState<Toast[]>([])
+
+  const toast = useCallback(({ title, description, variant = "default" }: Omit<Toast, "id">) => {
+    const id = Math.random().toString(36).substr(2, 9)
+    const newToast: Toast = { id, title, description, variant }
+
+    setToasts((prev) => [...prev, newToast])
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id))
+    }, 5000)
+
+    return {
+      id,
+      dismiss: () => setToasts((prev) => prev.filter((t) => t.id !== id)),
+    }
+  }, [])
+
+  return {
+    toast,
+    toasts,
+    dismiss: (id: string) => setToasts((prev) => prev.filter((t) => t.id !== id)),
+  }
 }

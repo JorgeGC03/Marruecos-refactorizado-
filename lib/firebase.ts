@@ -1,29 +1,17 @@
 "use client"
+import { GoogleAuthProvider, type User } from "firebase/auth"
+import { collection, addDoc, query, where, getDocs, orderBy, Timestamp } from "firebase/firestore"
 
-import { initializeApp, getApps } from "firebase/app"
-import { getAuth, GoogleAuthProvider, type User } from "firebase/auth"
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  Timestamp,
-} from "firebase/firestore"
-
-// Firebase configuration
+// Mock Firebase configuration
+// Replace with actual Firebase config when ready
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "mock-api-key",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "mock-auth-domain",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "mock-project-id",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "mock-storage-bucket",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "mock-sender-id",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "mock-app-id",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "mock-measurement-id",
 }
 
 // Debug: Log configuration (remove in production)
@@ -49,11 +37,31 @@ if (missingVars.length > 0) {
   throw new Error(`Missing required Firebase environment variables: ${missingVars.join(", ")}`)
 }
 
-// Initialize Firebase
-export const firebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig)
+// Mock Firebase app and auth objects
+export const firebaseApp = {
+  name: "mock-app",
+  options: firebaseConfig,
+}
 
-export const auth = getAuth(firebaseApp)
-export const db = getFirestore(firebaseApp)
+export const auth = {
+  currentUser: null,
+  signInWithEmailAndPassword: async (email: string, password: string) => {
+    console.log("Mock sign in:", email)
+    return { user: { uid: "mock-uid", email } }
+  },
+  signOut: async () => {
+    console.log("Mock sign out")
+  },
+}
+
+export const db = {
+  collection: (name: string) => ({
+    doc: (id: string) => ({
+      set: async (data: any) => console.log("Mock set:", name, id, data),
+      get: async () => ({ exists: false, data: () => null }),
+    }),
+  }),
+}
 
 // Google Auth Provider
 const googleProvider = new GoogleAuthProvider()
@@ -67,8 +75,8 @@ export async function signInWithGoogle() {
   return Promise.resolve()
 }
 
-export async function signInWithEmail(_email: string, _password: string) {
-  return Promise.resolve()
+export async function signInWithEmail(email: string, password: string) {
+  return auth.signInWithEmailAndPassword(email, password)
 }
 
 export async function signUpWithEmail(_e: string, _p: string, _n: string) {
@@ -80,7 +88,7 @@ export async function resetPassword(_email: string) {
 }
 
 export async function signOutUser() {
-  return Promise.resolve()
+  return auth.signOut()
 }
 
 // Helper function to create or update user document in Firestore
@@ -93,19 +101,15 @@ const upsertUser = async (
   try {
     console.log("💾 Guardando usuario en Firestore:", user.email)
 
-    await setDoc(
-      doc(db, "users", user.uid),
-      {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        authProvider: provider,
-        createdAt: Timestamp.now(),
-        lastLogin: Timestamp.now(),
-      },
-      { merge: true },
-    )
+    await db.collection("users").doc(user.uid).set({
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      authProvider: provider,
+      createdAt: Timestamp.now(),
+      lastLogin: Timestamp.now(),
+    })
 
     console.log("✅ Usuario guardado en Firestore")
   } catch (error) {
@@ -116,13 +120,9 @@ const upsertUser = async (
 
 const touchLastLogin = async (uid: string) => {
   try {
-    await setDoc(
-      doc(db, "users", uid),
-      {
-        lastLogin: Timestamp.now(),
-      },
-      { merge: true },
-    )
+    await db.collection("users").doc(uid).set({
+      lastLogin: Timestamp.now(),
+    })
   } catch (error) {
     console.error("❌ Error actualizando último login:", error)
   }
