@@ -50,7 +50,7 @@ if (missingVars.length > 0) {
 }
 
 // Initialize Firebase
-const firebaseApp: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+export const firebaseApp: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
 const db = getFirestore(firebaseApp) // Declare db variable here
 
 // Mock auth object
